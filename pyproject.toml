@@ -12,3 +12,17 @@ dependencies = [
     "pyspark==3.5.3",
     "taskipy>=1.14.1",
 ]
+
+[tool.taskipy.tasks]
+# Atalho para rodar o Jupyter Lab
+server = "jupyter lab"
+
+# Atalhos para a Ana usar no MkDocs
+docs_serve = "mkdocs serve"
+docs_deploy = "mkdocs gh-deploy"
+
+# Atalho para o Gabriel rodar o script de dados (ajuste o caminho se necessário)
+generate_data = "python data/data_generator.py"
+
+# Limpeza de arquivos temporários do Spark (opcional)
+clean = "rm -rf data/warehouse data/tabela_vendas_delta"
