@@ -1,0 +1,76 @@
+{
+  "format-version" : 2,
+  "table-uuid" : "fb892a1f-2834-41ee-ab6d-c1fdc722e57e",
+  "location" : "/home/ana/DEV/trabalho1ed/data/iceberg_warehouse/baseball/statcast_arremessadores",
+  "last-sequence-number" : 0,
+  "last-updated-ms" : 1776993874868,
+  "last-column-id" : 8,
+  "current-schema-id" : 0,
+  "schemas" : [ {
+    "type" : "struct",
+    "schema-id" : 0,
+    "fields" : [ {
+      "id" : 1,
+      "name" : "nome_jogador",
+      "required" : false,
+      "type" : "string"
+    }, {
+      "id" : 2,
+      "name" : "total_arremessos",
+      "required" : false,
+      "type" : "int"
+    }, {
+      "id" : 3,
+      "name" : "velocidade_media",
+      "required" : false,
+      "type" : "float"
+    }, {
+      "id" : 4,
+      "name" : "taxa_giro",
+      "required" : false,
+      "type" : "int"
+    }, {
+      "id" : 5,
+      "name" : "media_rebatidas_contra",
+      "required" : false,
+      "type" : "float"
+    }, {
+      "id" : 6,
+      "name" : "strikeouts",
+      "required" : false,
+      "type" : "int"
+    }, {
+      "id" : 7,
+      "name" : "home_runs_cedidos",
+      "required" : false,
+      "type" : "int"
+    }, {
+      "id" : 8,
+      "name" : "walks_cedidos",
+      "required" : false,
+      "type" : "int"
+    } ]
+  } ],
+  "default-spec-id" : 0,
+  "partition-specs" : [ {
+    "spec-id" : 0,
+    "fields" : [ ]
+  } ],
+  "last-partition-id" : 999,
+  "default-sort-order-id" : 0,
+  "sort-orders" : [ {
+    "order-id" : 0,
+    "fields" : [ ]
+  } ],
+  "properties" : {
+    "owner" : "ana",
+    "write.parquet.compression-codec" : "zstd"
+  },
+  "current-snapshot-id" : -1,
+  "refs" : { },
+  "snapshots" : [ ],
+  "statistics" : [ ],
+  "partition-statistics" : [ ],
+  "snapshot-log" : [ ],
+  "metadata-log" : [ ]
+}

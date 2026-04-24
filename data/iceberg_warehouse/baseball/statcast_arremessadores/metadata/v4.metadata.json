@@ -1,0 +1,164 @@
+{
+  "format-version" : 2,
+  "table-uuid" : "fb892a1f-2834-41ee-ab6d-c1fdc722e57e",
+  "location" : "/home/ana/DEV/trabalho1ed/data/iceberg_warehouse/baseball/statcast_arremessadores",
+  "last-sequence-number" : 3,
+  "last-updated-ms" : 1776993901975,
+  "last-column-id" : 8,
+  "current-schema-id" : 0,
+  "schemas" : [ {
+    "type" : "struct",
+    "schema-id" : 0,
+    "fields" : [ {
+      "id" : 1,
+      "name" : "nome_jogador",
+      "required" : false,
+      "type" : "string"
+    }, {
+      "id" : 2,
+      "name" : "total_arremessos",
+      "required" : false,
+      "type" : "int"
+    }, {
+      "id" : 3,
+      "name" : "velocidade_media",
+      "required" : false,
+      "type" : "float"
+    }, {
+      "id" : 4,
+      "name" : "taxa_giro",
+      "required" : false,
+      "type" : "int"
+    }, {
+      "id" : 5,
+      "name" : "media_rebatidas_contra",
+      "required" : false,
+      "type" : "float"
+    }, {
+      "id" : 6,
+      "name" : "strikeouts",
+      "required" : false,
+      "type" : "int"
+    }, {
+      "id" : 7,
+      "name" : "home_runs_cedidos",
+      "required" : false,
+      "type" : "int"
+    }, {
+      "id" : 8,
+      "name" : "walks_cedidos",
+      "required" : false,
+      "type" : "int"
+    } ]
+  } ],
+  "default-spec-id" : 0,
+  "partition-specs" : [ {
+    "spec-id" : 0,
+    "fields" : [ ]
+  } ],
+  "last-partition-id" : 999,
+  "default-sort-order-id" : 0,
+  "sort-orders" : [ {
+    "order-id" : 0,
+    "fields" : [ ]
+  } ],
+  "properties" : {
+    "owner" : "ana",
+    "write.parquet.compression-codec" : "zstd"
+  },
+  "current-snapshot-id" : 6441551490876406377,
+  "refs" : {
+    "main" : {
+      "snapshot-id" : 6441551490876406377,
+      "type" : "branch"
+    }
+  },
+  "snapshots" : [ {
+    "sequence-number" : 1,
+    "snapshot-id" : 7184220110924031184,
+    "timestamp-ms" : 1776993878089,
+    "summary" : {
+      "operation" : "append",
+      "spark.app.id" : "local-1776993842936",
+      "added-data-files" : "1",
+      "added-records" : "873",
+      "added-files-size" : "19532",
+      "changed-partition-count" : "1",
+      "total-records" : "873",
+      "total-files-size" : "19532",
+      "total-data-files" : "1",
+      "total-delete-files" : "0",
+      "total-position-deletes" : "0",
+      "total-equality-deletes" : "0"
+    },
+    "manifest-list" : "/home/ana/DEV/trabalho1ed/data/iceberg_warehouse/baseball/statcast_arremessadores/metadata/snap-7184220110924031184-1-90cbd362-5384-4493-b643-ec3baed56b32.avro",
+    "schema-id" : 0
+  }, {
+    "sequence-number" : 2,
+    "snapshot-id" : 2547925237505239340,
+    "parent-snapshot-id" : 7184220110924031184,
+    "timestamp-ms" : 1776993892707,
+    "summary" : {
+      "operation" : "append",
+      "spark.app.id" : "local-1776993842936",
+      "added-data-files" : "1",
+      "added-records" : "1",
+      "added-files-size" : "2238",
+      "changed-partition-count" : "1",
+      "total-records" : "874",
+      "total-files-size" : "21770",
+      "total-data-files" : "2",
+      "total-delete-files" : "0",
+      "total-position-deletes" : "0",
+      "total-equality-deletes" : "0"
+    },
+    "manifest-list" : "/home/ana/DEV/trabalho1ed/data/iceberg_warehouse/baseball/statcast_arremessadores/metadata/snap-2547925237505239340-1-a80bd731-b473-4b2b-9558-9c2ba1ee5613.avro",
+    "schema-id" : 0
+  }, {
+    "sequence-number" : 3,
+    "snapshot-id" : 6441551490876406377,
+    "parent-snapshot-id" : 2547925237505239340,
+    "timestamp-ms" : 1776993901975,
+    "summary" : {
+      "operation" : "overwrite",
+      "spark.app.id" : "local-1776993842936",
+      "added-data-files" : "1",
+      "deleted-data-files" : "1",
+      "added-records" : "873",
+      "deleted-records" : "873",
+      "added-files-size" : "19532",
+      "removed-files-size" : "19532",
+      "changed-partition-count" : "1",
+      "total-records" : "874",
+      "total-files-size" : "21770",
+      "total-data-files" : "2",
+      "total-delete-files" : "0",
+      "total-position-deletes" : "0",
+      "total-equality-deletes" : "0"
+    },
+    "manifest-list" : "/home/ana/DEV/trabalho1ed/data/iceberg_warehouse/baseball/statcast_arremessadores/metadata/snap-6441551490876406377-1-15c2798b-08e1-4b57-9ffd-5c2c385ba7dd.avro",
+    "schema-id" : 0
+  } ],
+  "statistics" : [ ],
+  "partition-statistics" : [ ],
+  "snapshot-log" : [ {
+    "timestamp-ms" : 1776993878089,
+    "snapshot-id" : 7184220110924031184
+  }, {
+    "timestamp-ms" : 1776993892707,
+    "snapshot-id" : 2547925237505239340
+  }, {
+    "timestamp-ms" : 1776993901975,
+    "snapshot-id" : 6441551490876406377
+  } ],
+  "metadata-log" : [ {
+    "timestamp-ms" : 1776993874868,
+    "metadata-file" : "/home/ana/DEV/trabalho1ed/data/iceberg_warehouse/baseball/statcast_arremessadores/metadata/v1.metadata.json"
+  }, {
+    "timestamp-ms" : 1776993878089,
+    "metadata-file" : "/home/ana/DEV/trabalho1ed/data/iceberg_warehouse/baseball/statcast_arremessadores/metadata/v2.metadata.json"
+  }, {
+    "timestamp-ms" : 1776993892707,
+    "metadata-file" : "/home/ana/DEV/trabalho1ed/data/iceberg_warehouse/baseball/statcast_arremessadores/metadata/v3.metadata.json"
+  } ]
+}
