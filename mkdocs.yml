@@ -1,1 +1,18 @@
-site_name: My Docs
+site_name: Trabalho 1 - Engenharia de Dados
+site_description: Documentação sobre Spark, Apache Iceberg e Delta Lake
+theme:
+  name: material
+  language: pt-BR
+  palette:
+    primary: blue
+    accent: cyan
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - tables
+nav:
+  - Contextualização: contextualizacao.md
+  - Spark: spark.md
+  - Iceberg: iceberg.md
+  - Delta: delta.md
