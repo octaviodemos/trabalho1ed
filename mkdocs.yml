@@ -12,7 +12,9 @@ markdown_extensions:
   - pymdownx.superfences
   - tables
 nav:
+  - Início: index.md
   - Contextualização: contextualizacao.md
+  - Modelagem e Testes: modelagem_e_testes.md
   - Spark: spark.md
   - Iceberg: iceberg.md
-  - Delta: delta.md
+  - Delta Lake: delta.md

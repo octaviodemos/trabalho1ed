@@ -14,19 +14,19 @@ O experimento esta no notebook `notebooks/iceberg.ipynb`, com:
 
 A carga inicial e feita a partir de `data/raw/statcast_data.csv`, seguida pelas operacoes de mutacao.
 
-## Cenarios executados no notebook
+## Cenarios executados no notebook (paridade com Delta)
 
-### 1) INSERT de registro de teste
+### 1) UPDATE de `velocidade_media`
 
-Insercao de um arremessador sintetico para validar append e leitura imediata.
+Correcao pontual da velocidade media para **Webb, Logan** (valor **89.2**), alinhada ao notebook `delta-lake.ipynb`.
 
-### 2) UPDATE de estatistica
+### 2) DELETE de jogador (sancao)
 
-Ajuste pontual em metrica de arremessador, simulando correcao de dado oficial.
+Remocao da linha de **Rodón, Carlos** (predicado por `nome_jogador`), mesmo cenario de saneamento usado no Delta.
 
-### 3) DELETE de registro
+### 3) Auditoria via snapshots
 
-Remocao de linha para reproduzir cenario de expurgo/saneamento.
+Consulta a `snapshots` e `history` para evidenciar commits e linha do tempo de versoes.
 
 ## Evidencia de auditoria no projeto
 

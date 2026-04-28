@@ -24,30 +24,56 @@ erDiagram
 
 ## 2. Cenários de Teste ACID (Delta Lake e Apache Iceberg)
 
-Com os dados de formato longo consolidados, você e seus colegas podem testar operações ACID (Update e Delete):
+Com a base de arremessadores carregada, os cenários de mutação foram padronizados para os dois formatos de tabela, garantindo comparação direta entre Delta e Iceberg.
 
-### Cenário 1: UPDATE (Correção de Estatística Oficial da Liga)
-* **Contexto Real**: Após uma revisão oficial no final da temporada, a MLB determinou que um dos Strikeouts creditados ao arremessador "Webb, Logan" foi na verdade uma bola foul. A liga manda remover 1 strikeout do total dele.
-* **Objetivo do Teste**: Modificar as estatísticas de um jogador sem reprocessar a tabela inteira.
+### Cenário 1: UPDATE (Correção de `velocidade_media`)
 
-**Exemplo Prático (Delta Lake via PySpark):**
+- **Contexto real**: após revisão de telemetria, o valor de velocidade média de **Webb, Logan** precisa ser corrigido para **89.2**.
+- **Objetivo do teste**: alterar apenas uma coluna de um jogador específico sem reprocessar o CSV inteiro.
+
+**Exemplo prático (Delta Lake via PySpark):**
+
 ```python
 from delta.tables import DeltaTable
+import pyspark.sql.functions as F
 
-tabela_delta = DeltaTable.forPath(spark, "caminho/para/tabela_delta_arremessadores")
+tabela_delta = DeltaTable.forPath(spark, "data/delta_statcast")
 
 tabela_delta.update(
-    condition = "nome_jogador = 'Webb, Logan'",
-    set = { "strikeouts": "strikeouts - 1" }
+    condition="nome_jogador = 'Webb, Logan'",
+    set={"velocidade_media": F.lit(89.2)},
 )
 ```
 
-### Cenário 2: DELETE (Remoção de Jogador por Sanção)
-* **Contexto Real**: Um arremessador violou diretrizes de integridade da liga e seus dados da temporada precisam ser expurgados da plataforma analítica.
-* **Objetivo do Teste**: Remover fisicamente a linha de estatísticas do jogador.
+**Exemplo prático (Iceberg via Spark SQL):**
 
-**Exemplo Prático (Apache Iceberg via Spark SQL):**
 ```sql
-DELETE FROM meu_catalogo.banco_iceberg.estatisticas_arremessadores
-WHERE nome_jogador = 'Jogador, Banido';
+UPDATE ice.baseball.statcast_arremessadores
+SET velocidade_media = 89.2
+WHERE nome_jogador = 'Webb, Logan';
 ```
+
+### Cenário 2: DELETE (Remoção de jogador por sanção/saneamento)
+
+- **Contexto real**: o registro de **Rodón, Carlos** precisa ser expurgado da camada analítica (sanção ou invalidação do dado).
+- **Objetivo do teste**: remover a linha do jogador e confirmar que ela não aparece mais no conjunto atual.
+
+**Exemplo prático (Delta Lake):**
+
+```python
+tabela_delta.delete(condition="nome_jogador = 'Rodón, Carlos'")
+```
+
+**Exemplo prático (Iceberg via Spark SQL):**
+
+```sql
+DELETE FROM ice.baseball.statcast_arremessadores
+WHERE nome_jogador = 'Rodón, Carlos';
+```
+
+### Cenário 3: Auditoria e histórico
+
+Depois das mutações, a equipe consulta histórico para comprovar rastreabilidade:
+
+- **Delta Lake**: `history()` e leitura por `versionAsOf`;
+- **Iceberg**: tabelas de metadados `snapshots` e `history`.

@@ -7,6 +7,16 @@
 | **Professor** | Jorge Luiz da Silva |
 | **Repositório** | [github.com/octaviodemos/trabalho1ed](https://github.com/octaviodemos/trabalho1ed) |
 
+---
+
+### Documentação pública (MkDocs)
+
+**Site gerado:** **[https://octaviodemos.github.io/trabalho1ed/](https://octaviodemos.github.io/trabalho1ed/)**
+
+> **Situação atual:** o deploy depende de **`task docs_deploy`** (ou `mkdocs gh-deploy`) com permissão no repositório e do **GitHub Pages** ativado na branch configurada. Se o link retornar **404**, o site ainda não foi publicado ou o Pages não está apontando para a branch correta.
+
+---
+
 ## Equipe
 
 | Nome | Papel |
@@ -93,7 +103,7 @@ Organização alinhada a **projetos Python** com documentação e artefatos de d
 | Pasta / arquivo | Conteúdo |
 |-----------------|----------|
 | **`/notebooks`** | Notebooks Jupyter com experimentos PySpark (Delta Lake, Iceberg e análises comparativas). |
-| **`/data`** | Dados de entrada e saída gerados pelos notebooks (por exemplo, tabelas no formato escolhido e arquivos intermediários). |
+| **`/data`** | Dados de entrada e saída. **Entrada bruta:** `data/raw/statcast_data.csv` (Statcast). **Saídas dos notebooks:** tabela Delta em **`data/delta_statcast/`**; warehouse Iceberg em **`data/iceberg_warehouse/`**; `data/warehouse/` é o diretório padrão do Spark para o catálogo local do Delta, quando usado. |
 | **`/docs`** | Fontes em Markdown consumidas pelo **MkDocs** (páginas do trabalho, metodologia, resultados). |
 | **`/assets`** | Recursos estáticos (imagens, diagramas, arquivos auxiliares) referenciados pela documentação ou pelos notebooks. |
 | **`mkdocs.yml`** | Configuração do site de documentação. |
@@ -123,7 +133,7 @@ O projeto utiliza o **[Taskipy](https://github.com/taskipy/taskipy)** para centr
 | **`task docs_serve`** | Inicia o servidor local do **MkDocs** para pré-visualizar a documentação. |
 | **`task docs_deploy`** | Realiza o **deploy** da documentação para o **GitHub Pages** (`mkdocs gh-deploy`). |
 | **`task generate_data`** | Executa o script de geração de dados da **loja fictícia** (`python data/data_generator.py`). |
-| **`task clean`** | Remove arquivos temporários e artefatos de warehouse do Spark em `data/` (por exemplo, `data/warehouse` e `data/tabela_vendas_delta`). |
+| **`task clean`** | Remove artefatos gerados: `data/warehouse`, `data/iceberg_warehouse`, `data/delta_statcast` e `data/tabela_vendas_delta` (cenários antigos de exemplo), além de material legado. |
 
 > **Atenção:** O comando `task clean` apaga diretórios de dados gerados localmente. Use apenas quando quiser **reiniciar** o cenário a partir de um estado limpo.
 
@@ -143,23 +153,23 @@ Acesse o endereço exibido no terminal (em geral **http://127.0.0.1:8000**) para
 
 ### 7.2. Documentação pública (GitHub Pages)
 
-Após publicar com o fluxo do MkDocs para o GitHub (por exemplo, **`mkdocs gh-deploy`** configurado no repositório), a documentação estática fica disponível em:
+Publicação (normalmente pela **`gh-pages`**): execute **`task docs_deploy`** na raiz, com branch **`main`** atualizada e remoto configurado. URL esperada:
 
 **[https://octaviodemos.github.io/trabalho1ed/](https://octaviodemos.github.io/trabalho1ed/)**
 
-> Se o repositório ou a organização do GitHub Pages for alterada, atualize este link na documentação e no README para refletir a URL correta do deploy.
+O mesmo link aparece em destaque no início deste README. Se a página não carregar, confira se o **GitHub Pages** está ativo em *Settings → Pages* e se o deploy concluiu sem erro.
+
+> Se o repositório ou a URL do GitHub Pages mudar, atualize o link no README e no `mkdocs.yml` conforme a nova publicação.
 
 ---
 
-## 8. Dataset
+## 8. Dataset e cenários nos notebooks
 
-O cenário adotado é o de uma **loja fictícia**, com dados de vendas e operações típicas de sistemas transacionais refletidas no lakehouse:
+**Experimento principal (paridade Delta ↔ Iceberg):** estatísticas agregadas de arremessadores **MLB Statcast** em `data/raw/statcast_data.csv`, com `INSERT`/`UPDATE`/`DELETE` ilustrados nos notebooks sobre as colunas padronizadas em `src/ingestao.py` (incluindo correção de **`velocidade_media`** e remoção do registro **Rodón, Carlos**).
 
-- **`INSERT`** — inclusão de novos registros (por exemplo, novas vendas).
-- **`UPDATE`** — correções ou alterações de atributos (cliente, produto, valores).
-- **`DELETE`** — remoção lógica ou exclusão de linhas conforme regras do experimento.
+**Cenário complementar (loja fictícia):** dados sintéticos de vendas podem ser gerados via **`task generate_data`** para exercícios adicionais de QA, quando aplicável.
 
-Essas operações permitem comparar como **Delta Lake** e **Iceberg** tratam **mutabilidade**, **histórico** e **consistência** em tabelas gerenciadas pelo Spark.
+As operações sobre o Statcast permitem comparar como **Delta Lake** e **Iceberg** tratam **mutabilidade**, **histórico** e **consistência** em tabelas gerenciadas pelo Spark.
 
 ---
 

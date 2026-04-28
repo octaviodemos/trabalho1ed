@@ -21,7 +21,7 @@ O arquivo `src/ingestao.py` define:
 
 - schema esperado do Statcast;
 - renomeacao de colunas de origem para o modelo do projeto;
-- funcao `ler_e_limpar_dados(...)`, reutilizada no notebook de Delta.
+- funcao `ler_e_limpar_dados(...)`, reutilizada nos notebooks de Delta e Iceberg.
 
 Essa etapa padroniza os dados antes da persistencia e evita inconsistencias por inferencia automatica de tipos.
 

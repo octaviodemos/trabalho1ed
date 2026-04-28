@@ -1,17 +1,14 @@
-# Welcome to MkDocs
+# Trabalho 1 — Engenharia de Dados (SATC)
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Documentação do projeto de pesquisa que compara **Apache Delta Lake** e **Apache Iceberg** sobre **PySpark**, usando o dataset **Statcast** agregado (`data/raw/statcast_data.csv`) e os notebooks em `notebooks/`.
 
-## Commands
+## Conteúdo deste site
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+| Página | Tema |
+|--------|------|
+| [Contextualização](contextualizacao.md) | Objetivo do trabalho, escopo do experimento e critérios de comparação. |
+| [Spark](spark.md) | Papel do Apache Spark no fluxo e integração com `src/ingestao.py`. |
+| [Iceberg](iceberg.md) | Catálogo, warehouse local e cenários no `iceberg.ipynb`. |
+| [Delta Lake](delta.md) | Escrita em `data/delta_statcast` e operações via API no `delta-lake.ipynb`. |
 
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+Para editar localmente: na raiz do repositório, com o ambiente ativado, use `task docs_serve` ou `mkdocs serve`.
