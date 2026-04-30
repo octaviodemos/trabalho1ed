@@ -241,6 +241,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../exemplos_codigo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exemplos de código
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../modelagem_e_testes/" class="md-nav__link">
         
   
@@ -505,6 +525,21 @@
 <li>funcao <code>ler_e_limpar_dados(...)</code>, reutilizada nos notebooks de Delta e Iceberg.</li>
 </ul>
 <p>Essa etapa padroniza os dados antes da persistencia e evita inconsistencias por inferencia automatica de tipos.</p>
+<p>Exemplo de uso após o <code>SparkSession</code> já existir (o builder completo está em <a href="../exemplos_codigo/">Exemplos de código</a> para Delta e Iceberg):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">raiz</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">raiz</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">raiz</span><span class="p">))</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.ingestao</span><span class="w"> </span><span class="kn">import</span> <span class="n">obter_esquema_statcast</span><span class="p">,</span> <span class="n">ler_e_limpar_dados</span>
+
+<span class="n">csv_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">raiz</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;raw&quot;</span> <span class="o">/</span> <span class="s2">&quot;statcast_data.csv&quot;</span><span class="p">)</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">obter_esquema_statcast</span><span class="p">()</span>
+<span class="n">df_statcast</span> <span class="o">=</span> <span class="n">ler_e_limpar_dados</span><span class="p">(</span><span class="n">spark</span><span class="p">,</span> <span class="n">csv_path</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_statcast</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+</code></pre></div>
 <h2 id="notebooks-onde-o-spark-e-executado">Notebooks onde o Spark e executado</h2>
 <ul>
 <li><code>notebooks/delta-lake.ipynb</code></li>

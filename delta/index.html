@@ -239,6 +239,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../exemplos_codigo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exemplos de código
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../modelagem_e_testes/" class="md-nav__link">
         
   
@@ -560,6 +580,20 @@
 <li>escrita da tabela em <code>data/delta_statcast</code>.</li>
 </ul>
 <p>O notebook tambem utiliza a API <code>DeltaTable</code> para executar alteracoes pontuais sem recarga completa da base.</p>
+<p>Sessao Spark com extensões e <em>catalog</em> Delta (detalhes e demais passos em <a href="../exemplos_codigo/">Exemplos de código</a>):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">DELTA_PACKAGES</span> <span class="o">=</span> <span class="s2">&quot;io.delta:delta-spark_2.12:3.2.0&quot;</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;DeltaLake_SATC&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.jars.packages&quot;</span><span class="p">,</span> <span class="n">DELTA_PACKAGES</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.extensions&quot;</span><span class="p">,</span> <span class="s2">&quot;io.delta.sql.DeltaSparkSessionExtension&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.catalog.spark_catalog&quot;</span><span class="p">,</span> <span class="s2">&quot;org.apache.spark.sql.delta.catalog.DeltaCatalog&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.warehouse.dir&quot;</span><span class="p">,</span> <span class="s2">&quot;data/warehouse&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div>
 <h2 id="cenarios-executados-no-notebook">Cenarios executados no notebook</h2>
 <h3 id="1-carga-inicial-da-tabela">1) Carga inicial da tabela</h3>
 <p>Persistencia do dataset de arremessadores no formato Delta para criar a linha de base do experimento.</p>
@@ -569,6 +603,15 @@
 <p>Remocao de registro para reproduzir cenario de saneamento/sancao, mantendo historico da operacao.</p>
 <h2 id="evidencia-de-historico-transacional">Evidencia de historico transacional</h2>
 <p>O notebook consulta <code>history()</code> da tabela Delta ao final. Isso registra cada operacao executada no experimento e serve como evidencia de auditoria para o relatorio.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">delta.tables</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeltaTable</span>
+
+<span class="n">tabela_delta</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="o">.</span><span class="n">forPath</span><span class="p">(</span><span class="n">spark</span><span class="p">,</span> <span class="n">CAMINHO_DELTA</span><span class="p">)</span>
+<span class="n">tabela_delta</span><span class="o">.</span><span class="n">history</span><span class="p">()</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;operation&quot;</span><span class="p">,</span> <span class="s2">&quot;operationParameters&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;versionAsOf&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">CAMINHO_DELTA</span><span class="p">)</span>
+</code></pre></div>
 <h2 id="o-que-observamos-com-delta">O que observamos com Delta</h2>
 <p>Dentro do escopo deste trabalho:</p>
 <ul>

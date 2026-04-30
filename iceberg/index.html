@@ -241,6 +241,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../exemplos_codigo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exemplos de código
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../modelagem_e_testes/" class="md-nav__link">
         
   
@@ -562,6 +582,25 @@
 <li>tabela <code>ice.baseball.statcast_arremessadores</code>.</li>
 </ul>
 <p>A carga inicial e feita a partir de <code>data/raw/statcast_data.csv</code>, seguida pelas operacoes de mutacao.</p>
+<p>Configuracao minima do <code>SparkSession</code> com <em>runtime</em> Iceberg 3.5 e <em>warehouse</em> local (trechos completos em <a href="../exemplos_codigo/">Exemplos de código</a>):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">raiz_projeto</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="n">warehouse_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">raiz_projeto</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;iceberg_warehouse&quot;</span><span class="p">)</span>
+<span class="n">ICEBERG_RUNTIME</span> <span class="o">=</span> <span class="s2">&quot;org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.5.2&quot;</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;Iceberg_Statcast&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.jars.packages&quot;</span><span class="p">,</span> <span class="n">ICEBERG_RUNTIME</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.extensions&quot;</span><span class="p">,</span> <span class="s2">&quot;org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.catalog.ice&quot;</span><span class="p">,</span> <span class="s2">&quot;org.apache.iceberg.spark.SparkCatalog&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.catalog.ice.type&quot;</span><span class="p">,</span> <span class="s2">&quot;hadoop&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.catalog.ice.warehouse&quot;</span><span class="p">,</span> <span class="n">warehouse_path</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.defaultCatalog&quot;</span><span class="p">,</span> <span class="s2">&quot;ice&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div>
 <h2 id="cenarios-executados-no-notebook-paridade-com-delta">Cenarios executados no notebook (paridade com Delta)</h2>
 <h3 id="1-update-de-velocidade_media">1) UPDATE de <code>velocidade_media</code></h3>
 <p>Correcao pontual da velocidade media para <strong>Webb, Logan</strong> (valor <strong>89.2</strong>), alinhada ao notebook <code>delta-lake.ipynb</code>.</p>
@@ -569,6 +608,11 @@
 <p>Remocao da linha de <strong>Rodón, Carlos</strong> (predicado por <code>nome_jogador</code>), mesmo cenario de saneamento usado no Delta.</p>
 <h3 id="3-auditoria-via-snapshots">3) Auditoria via snapshots</h3>
 <p>Consulta a <code>snapshots</code> e <code>history</code> para evidenciar commits e linha do tempo de versoes.</p>
+<div class="highlight"><pre><span></span><code><span class="n">TABELA</span> <span class="o">=</span> <span class="s2">&quot;ice.baseball.statcast_arremessadores&quot;</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="n">TABELA</span><span class="si">}</span><span class="s2">.snapshots ORDER BY committed_at DESC&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="n">TABELA</span><span class="si">}</span><span class="s2">.history ORDER BY made_current_at DESC&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
 <h2 id="evidencia-de-auditoria-no-projeto">Evidencia de auditoria no projeto</h2>
 <p>Ao final do notebook, a equipe consulta o historico de snapshots para comprovar que cada operacao gera uma nova versao da tabela.</p>
 <p>Esse trecho e central para a comparacao com Delta, pois mostra rastreabilidade das alteracoes no mesmo fluxo de estudo.</p>

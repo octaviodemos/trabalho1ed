@@ -14,7 +14,7 @@
         <link rel="prev" href="..">
       
       
-        <link rel="next" href="../modelagem_e_testes/">
+        <link rel="next" href="../exemplos_codigo/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -326,6 +326,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../exemplos_codigo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exemplos de código
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../modelagem_e_testes/" class="md-nav__link">
         
   
@@ -513,6 +533,7 @@
 <li>Execucao de cenarios ACID nos notebooks.</li>
 <li>Verificacao de historico transacional (auditoria).</li>
 </ol>
+<p>Em código, o núcleo comum é sempre <code>ler_e_limpar_dados(spark, caminho_csv)</code> antes de ramificar para <code>df.write.format("delta")</code> ou <code>CREATE TABLE ... USING iceberg</code> + <code>INSERT</code>, como na página <a href="../exemplos_codigo/">Exemplos de código</a>.</p>
 <h2 id="criterios-de-comparacao-usados-pela-equipe">Criterios de comparacao usados pela equipe</h2>
 <p>Durante o trabalho, a comparacao entre Delta e Iceberg considera:</p>
 <ul>
