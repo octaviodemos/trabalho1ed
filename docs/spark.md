@@ -25,6 +25,24 @@ O arquivo `src/ingestao.py` define:
 
 Essa etapa padroniza os dados antes da persistencia e evita inconsistencias por inferencia automatica de tipos.
 
+Exemplo de uso após o `SparkSession` já existir (o builder completo está em [Exemplos de código](exemplos_codigo.md) para Delta e Iceberg):
+
+```python
+import sys
+from pathlib import Path
+
+raiz = Path(".").resolve()
+if str(raiz) not in sys.path:
+    sys.path.insert(0, str(raiz))
+
+from src.ingestao import obter_esquema_statcast, ler_e_limpar_dados
+
+csv_path = str(raiz / "data" / "raw" / "statcast_data.csv")
+schema = obter_esquema_statcast()
+df_statcast = ler_e_limpar_dados(spark, csv_path)
+assert len(df_statcast.columns) == len(schema.fields)
+```
+
 ## Notebooks onde o Spark e executado
 
 - `notebooks/delta-lake.ipynb`

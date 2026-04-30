@@ -205,3 +205,10 @@ __marimo__/
 .streamlit/secrets.toml
 
 # Generated using ignr.py - github.com/Antrikshy/ignr.py
+
+# Saídas locais Spark / Delta / Iceberg (notebooks; binários grandes)
+data/warehouse/
+data/iceberg_warehouse/
+data/delta_statcast/
+data/tabela_vendas_delta/
+data/**/*.crc

@@ -1,9 +1,9 @@
 {
   "format-version" : 2,
-  "table-uuid" : "fb892a1f-2834-41ee-ab6d-c1fdc722e57e",
-  "location" : "/home/ana/DEV/trabalho1ed/data/iceberg_warehouse/baseball/statcast_arremessadores",
+  "table-uuid" : "5677f89e-13a1-47c4-b98c-d79189ac323d",
+  "location" : "/mnt/c/source/trabalho1ed/data/iceberg_warehouse/baseball/statcast_arremessadores",
   "last-sequence-number" : 0,
-  "last-updated-ms" : 1776993874868,
+  "last-updated-ms" : 1777504492787,
   "last-column-id" : 8,
   "current-schema-id" : 0,
   "schemas" : [ {
@@ -63,7 +63,7 @@
     "fields" : [ ]
   } ],
   "properties" : {
-    "owner" : "ana",
+    "owner" : "octavio",
     "write.parquet.compression-codec" : "zstd"
   },
   "current-snapshot-id" : -1,

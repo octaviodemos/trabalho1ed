@@ -7,6 +7,7 @@ Documentação do projeto de pesquisa que compara **Apache Delta Lake** e **Apac
 | Página | Tema |
 |--------|------|
 | [Contextualização](contextualizacao.md) | Objetivo do trabalho, escopo do experimento e critérios de comparação. |
+| [Exemplos de código](exemplos_codigo.md) | Trechos PySpark e SQL alinhados aos notebooks (ingestão, Delta, Iceberg). |
 | [Spark](spark.md) | Papel do Apache Spark no fluxo e integração com `src/ingestao.py`. |
 | [Iceberg](iceberg.md) | Catálogo, warehouse local e cenários no `iceberg.ipynb`. |
 | [Delta Lake](delta.md) | Escrita em `data/delta_statcast` e operações via API no `delta-lake.ipynb`. |

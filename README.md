@@ -173,6 +173,14 @@ As operações sobre o Statcast permitem comparar como **Delta Lake** e **Iceber
 
 ---
 
+## 9. Referências
+
+- **Canal DataWay BR (YouTube):** pesquisa sobre conceitos de Spark, Delta Lake e Iceberg.
+- **Repositórios de exemplo (GitHub):** projetos de referência do professor — [github.com/jlsilva01/spark-delta](https://github.com/jlsilva01/spark-delta) e [github.com/jlsilva01/spark-iceberg](https://github.com/jlsilva01/spark-iceberg).
+- **Material de apoio:** documento em PDF *Python para Engenharia de Dados — material de apoio.pdf*, fornecido em aula.
+
+---
+
 ## Licença e uso acadêmico
 
 Este repositório destina-se ao **cumprimento das exigências da disciplina** sob orientação do professor **Jorge Luiz da Silva**. Reutilize o conteúdo apenas respeitando as normas da SATC e da disciplina.

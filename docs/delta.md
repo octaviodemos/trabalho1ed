@@ -14,6 +14,23 @@ O fluxo esta em `notebooks/delta-lake.ipynb` e usa:
 
 O notebook tambem utiliza a API `DeltaTable` para executar alteracoes pontuais sem recarga completa da base.
 
+Sessao Spark com extensões e *catalog* Delta (detalhes e demais passos em [Exemplos de código](exemplos_codigo.md)):
+
+```python
+from pyspark.sql import SparkSession
+
+DELTA_PACKAGES = "io.delta:delta-spark_2.12:3.2.0"
+
+spark = (
+    SparkSession.builder.appName("DeltaLake_SATC")
+    .config("spark.jars.packages", DELTA_PACKAGES)
+    .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+    .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+    .config("spark.sql.warehouse.dir", "data/warehouse")
+    .getOrCreate()
+)
+```
+
 ## Cenarios executados no notebook
 
 ### 1) Carga inicial da tabela
@@ -31,6 +48,17 @@ Remocao de registro para reproduzir cenario de saneamento/sancao, mantendo histo
 ## Evidencia de historico transacional
 
 O notebook consulta `history()` da tabela Delta ao final. Isso registra cada operacao executada no experimento e serve como evidencia de auditoria para o relatorio.
+
+```python
+from delta.tables import DeltaTable
+
+tabela_delta = DeltaTable.forPath(spark, CAMINHO_DELTA)
+tabela_delta.history().select(
+    "version", "timestamp", "operation", "operationParameters"
+).show(truncate=False)
+
+spark.read.format("delta").option("versionAsOf", 0).load(CAMINHO_DELTA)
+```
 
 ## O que observamos com Delta
 

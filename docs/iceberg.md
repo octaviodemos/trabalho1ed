@@ -14,6 +14,28 @@ O experimento esta no notebook `notebooks/iceberg.ipynb`, com:
 
 A carga inicial e feita a partir de `data/raw/statcast_data.csv`, seguida pelas operacoes de mutacao.
 
+Configuracao minima do `SparkSession` com *runtime* Iceberg 3.5 e *warehouse* local (trechos completos em [Exemplos de código](exemplos_codigo.md)):
+
+```python
+from pathlib import Path
+from pyspark.sql import SparkSession
+
+raiz_projeto = Path(".").resolve()
+warehouse_path = str(raiz_projeto / "data" / "iceberg_warehouse")
+ICEBERG_RUNTIME = "org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.5.2"
+
+spark = (
+    SparkSession.builder.appName("Iceberg_Statcast")
+    .config("spark.jars.packages", ICEBERG_RUNTIME)
+    .config("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions")
+    .config("spark.sql.catalog.ice", "org.apache.iceberg.spark.SparkCatalog")
+    .config("spark.sql.catalog.ice.type", "hadoop")
+    .config("spark.sql.catalog.ice.warehouse", warehouse_path)
+    .config("spark.sql.defaultCatalog", "ice")
+    .getOrCreate()
+)
+```
+
 ## Cenarios executados no notebook (paridade com Delta)
 
 ### 1) UPDATE de `velocidade_media`
@@ -27,6 +49,13 @@ Remocao da linha de **Rodón, Carlos** (predicado por `nome_jogador`), mesmo cen
 ### 3) Auditoria via snapshots
 
 Consulta a `snapshots` e `history` para evidenciar commits e linha do tempo de versoes.
+
+```python
+TABELA = "ice.baseball.statcast_arremessadores"
+
+spark.sql(f"SELECT * FROM {TABELA}.snapshots ORDER BY committed_at DESC").show(truncate=False)
+spark.sql(f"SELECT * FROM {TABELA}.history ORDER BY made_current_at DESC").show(truncate=False)
+```
 
 ## Evidencia de auditoria no projeto
 

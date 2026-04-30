@@ -32,6 +32,8 @@ No projeto, isso aparece em cenarios reais de manutencao:
 4. Execucao de cenarios ACID nos notebooks.
 5. Verificacao de historico transacional (auditoria).
 
+Em código, o núcleo comum é sempre `ler_e_limpar_dados(spark, caminho_csv)` antes de ramificar para `df.write.format("delta")` ou `CREATE TABLE ... USING iceberg` + `INSERT`, como na página [Exemplos de código](exemplos_codigo.md).
+
 ## Criterios de comparacao usados pela equipe
 
 Durante o trabalho, a comparacao entre Delta e Iceberg considera:
